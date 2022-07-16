@@ -1,3 +1,6 @@
+import axios from "axios";
+
+
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
@@ -28,7 +31,13 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+  "tetondan",
+  "dustinmyers",
+  "justsml",
+  "luishrd",
+  "bigknell"
+];
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -49,6 +58,77 @@ const followersArray = [];
       </div>
     </div>
 */
+//no bull shit guide to math and physics
+//inglorious bastards (terantino)
+//tenet
+
+const parentElement = document.querySelector(".cards");
+
+axios.get("https://api.github.com/users/CliffRR")
+  .then((res)=>{
+    parentElement.appendChild(UserInfo(res.data))
+    
+  })
+
+//the additional followers
+followersArray.forEach(element => {
+  axios.get(`https://api.github.com/users/${element}`)
+  .then((res)=>{
+    parentElement.appendChild(UserInfo(res.data))
+  })
+})
+
+
+
+
+function UserInfo(user) {
+  const card = document.createElement("div");
+  const image = document.createElement("img");
+  const cardInfo = document.createElement("div");
+  const name = document.createElement("h3");
+  const userName = document.createElement("p")
+  const location = document.createElement("p");
+  const profile = document.createElement("p");
+    const profileChild = document.createElement("a");
+  const followers = document.createElement("p");
+  const following = document.createElement("p");
+  const bio = document.createElement("p");
+
+
+  image.src = user.avatar_url;
+  name.textContent = user.name;
+  userName.textContent = user.login;
+  location.textContent = user.location;
+  profileChild.textContent = user.url;
+  followers.textContent = user.followers;
+  following.textContent = user.following;
+  profileChild.href = user.html_url;
+  bio.textContent = user.bio;
+
+
+  //adding classes
+  card.classList.add("card");
+  cardInfo.classList.add("card-info");
+  name.classList.add("name");
+  userName.classList.add("username");
+  
+
+
+  //hierarcy
+  card.appendChild(image);
+  card.appendChild(cardInfo);
+  cardInfo.appendChild(name);
+  cardInfo.appendChild(userName);
+  cardInfo.appendChild(location);
+  cardInfo.appendChild(profile);
+  profile.appendChild(profileChild);
+  cardInfo.appendChild(followers);
+  cardInfo.appendChild(following);
+  cardInfo.appendChild(bio);
+
+
+  return card;
+};
 
 /*
   List of LS Instructors Github username's:
